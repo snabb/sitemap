@@ -1,17 +1,18 @@
-package sitemap
+package sitemap_test
 
 import (
+	"github.com/snabb/sitemap"
 	"os"
 	"time"
 )
 
-func ExampleWriteTo() {
-	sm := New()
+func Example() {
+	sm := sitemap.New()
 	t := time.Unix(0, 0).UTC()
-	sm.Add(&URL{
+	sm.Add(&sitemap.URL{
 		Loc:        "http://example.com/",
 		LastMod:    &t,
-		ChangeFreq: Daily,
+		ChangeFreq: sitemap.Daily,
 	})
 	sm.WriteTo(os.Stdout)
 	// Output:
