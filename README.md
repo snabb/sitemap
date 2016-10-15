@@ -1,6 +1,8 @@
 sitemap
 =======
 
+[![GoDoc](https://godoc.org/github.com/snabb/sitemap?status.svg)](https://godoc.org/github.com/snabb/sitemap)
+
 The Go package sitemap provides tools for creating an XML sitemap and
 writing it to an io.Writer (such as http.ResponseWriter). Please see
 http://www.sitemaps.org/ for description of sitemap contents.
