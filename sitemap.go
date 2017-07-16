@@ -5,7 +5,7 @@ package sitemap
 
 import (
 	"encoding/xml"
-	"github.com/snabb/counterwriter"
+	"github.com/snabb/diagio"
 	"io"
 	"time"
 )
@@ -56,7 +56,7 @@ func (s *Sitemap) Add(u *URL) {
 // WriteTo writes XML encoded sitemap to given io.Writer.
 // Implements io.WriterTo.
 func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
-	cw := counterwriter.New(w)
+	cw := diagio.NewCounterWriter(w)
 
 	_, err = cw.Write([]byte(xml.Header))
 	if err != nil {
