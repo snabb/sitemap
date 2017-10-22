@@ -1,6 +1,8 @@
-// Package sitemap provides tools for creating an XML sitemap and writing it
-// to an io.Writer (such as http.ResponseWriter). Please see
-// http://www.sitemaps.org/ for description of sitemap contents.
+// Package sitemap provides tools for creating XML sitemaps
+// and sitemap indexes and writing them to io.Writer (such as
+// http.ResponseWriter).
+//
+// Please see http://www.sitemaps.org/ for description of sitemap contents.
 package sitemap
 
 import (
@@ -24,8 +26,10 @@ const (
 	Never   ChangeFreq = "never"
 )
 
-// Single URL entry in sitemap. LastMod is a pointer to time.Time because
-// omitempty does not work otherwise. Loc is the only mandatory item.
+// Single URL entry in sitemap or sitemap index. LastMod is a pointer
+// to time.Time because omitempty does not work otherwise. Loc is the
+// only mandatory item. ChangeFreq and Priority must be left empty when
+// using with a sitemap index.
 type URL struct {
 	Loc        string     `xml:"loc"`
 	LastMod    *time.Time `xml:"lastmod,omitempty"`
@@ -33,6 +37,9 @@ type URL struct {
 	Priority   float32    `xml:"priority,omitempty"`
 }
 
+// Sitemap represents a complete sitemap which can be marshaled to XML.
+// New instances must be created with New() in order to set the xmlns
+// attribute correctly.
 type Sitemap struct {
 	XMLName xml.Name `xml:"urlset"`
 	Xmlns   string   `xml:"xmlns,attr"`
