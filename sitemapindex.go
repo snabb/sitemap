@@ -9,12 +9,15 @@ import (
 // SitemapIndex is like Sitemap except the elements are named differently
 // (and ChangeFreq and Priority may not be used).
 // New instances must be created with NewSitemapIndex() in order to set the
-// xmlns attribute correctly.
+// xmlns attribute correctly. Minify can be set to make the output less
+// human readable.
 type SitemapIndex struct {
 	XMLName xml.Name `xml:"sitemapindex"`
 	Xmlns   string   `xml:"xmlns,attr"`
 
 	URLs []*URL `xml:"sitemap"`
+
+	Minify bool `xml:"-"`
 }
 
 // New returns new SitemapIndex.
@@ -40,7 +43,9 @@ func (s *SitemapIndex) WriteTo(w io.Writer) (n int64, err error) {
 		return cw.Count(), err
 	}
 	en := xml.NewEncoder(cw)
-	en.Indent("", "  ")
+	if !s.Minify {
+		en.Indent("", "  ")
+	}
 	err = en.Encode(s)
 	cw.Write([]byte{'\n'})
 	return cw.Count(), err

@@ -39,12 +39,15 @@ type URL struct {
 
 // Sitemap represents a complete sitemap which can be marshaled to XML.
 // New instances must be created with New() in order to set the xmlns
-// attribute correctly.
+// attribute correctly. Minify can be set to make the output less human
+// readable.
 type Sitemap struct {
 	XMLName xml.Name `xml:"urlset"`
 	Xmlns   string   `xml:"xmlns,attr"`
 
 	URLs []*URL `xml:"url"`
+
+	Minify bool `xml:"-"`
 }
 
 // New returns a new Sitemap.
@@ -70,7 +73,9 @@ func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
 		return cw.Count(), err
 	}
 	en := xml.NewEncoder(cw)
-	en.Indent("", "  ")
+	if !s.Minify {
+		en.Indent("", "  ")
+	}
 	err = en.Encode(s)
 	cw.Write([]byte{'\n'})
 	return cw.Count(), err
