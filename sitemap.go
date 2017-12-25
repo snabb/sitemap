@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// ChangeFreq specifies change frequency of a sitemap entry. It is just a string.
 type ChangeFreq string
 
 // Feel free to use these constants for ChangeFreq (or you can just supply
@@ -26,7 +27,7 @@ const (
 	Never   ChangeFreq = "never"
 )
 
-// Single URL entry in sitemap or sitemap index. LastMod is a pointer
+// URL entry in sitemap or sitemap index. LastMod is a pointer
 // to time.Time because omitempty does not work otherwise. Loc is the
 // only mandatory item. ChangeFreq and Priority must be left empty when
 // using with a sitemap index.

@@ -20,7 +20,7 @@ type SitemapIndex struct {
 	Minify bool `xml:"-"`
 }
 
-// New returns new SitemapIndex.
+// NewSitemapIndex returns new SitemapIndex.
 func NewSitemapIndex() *SitemapIndex {
 	return &SitemapIndex{
 		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
