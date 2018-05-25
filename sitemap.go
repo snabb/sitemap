@@ -27,6 +27,20 @@ const (
 	Never   ChangeFreq = "never"
 )
 
+// Publication for new
+type Publication struct {
+	Name  string `xml:"name,omitempty"`
+	Language string `xml:"language,omitempty"`
+}
+
+// News entry following the format 
+type News struct {
+	Publication     Publication `xml:"publication,omitempty"`
+	Title           string      `xml:"title,omitempty"`
+	PublicationDate *time.Time  `xml:"publication_date,omitempty"`
+	Genres          string      `xml:"genres,omitempty"`
+}
+
 // URL entry in sitemap or sitemap index. LastMod is a pointer
 // to time.Time because omitempty does not work otherwise. Loc is the
 // only mandatory item. ChangeFreq and Priority must be left empty when
@@ -36,6 +50,7 @@ type URL struct {
 	LastMod    *time.Time `xml:"lastmod,omitempty"`
 	ChangeFreq ChangeFreq `xml:"changefreq,omitempty"`
 	Priority   float32    `xml:"priority,omitempty"`
+	News       *News      `xml:"news,omitempty"`
 }
 
 // Sitemap represents a complete sitemap which can be marshaled to XML.
