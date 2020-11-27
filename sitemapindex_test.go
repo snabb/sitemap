@@ -1,9 +1,10 @@
 package sitemap_test
 
 import (
-	"github.com/snabb/sitemap"
 	"os"
 	"time"
+
+	"github.com/semantosoph/sitemap"
 )
 
 func ExampleSitemapIndex() {
@@ -11,7 +12,7 @@ func ExampleSitemapIndex() {
 	t := time.Unix(0, 0).UTC()
 	smi.Add(&sitemap.URL{
 		Loc:     "http://example.com/sitemap-1.xml",
-		LastMod: &t,
+		LastMod: sitemap.Date{t},
 	})
 	smi.WriteTo(os.Stdout)
 	// Output:
@@ -19,7 +20,7 @@ func ExampleSitemapIndex() {
 	// <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	//   <sitemap>
 	//     <loc>http://example.com/sitemap-1.xml</loc>
-	//     <lastmod>1970-01-01T00:00:00Z</lastmod>
+	//     <lastmod>1970-01-01</lastmod>
 	//   </sitemap>
 	// </sitemapindex>
 }
