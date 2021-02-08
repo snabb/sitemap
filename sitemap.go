@@ -7,10 +7,17 @@ package sitemap
 
 import (
 	"encoding/xml"
-	"github.com/snabb/diagio"
+	"fmt"
 	"io"
 	"time"
+
+	"github.com/snabb/diagio"
 )
+
+// Date specifies a proxy time object that we use to define our own XML encoder.
+type Date struct {
+	time.Time
+}
 
 // ChangeFreq specifies change frequency of a sitemap entry. It is just a string.
 type ChangeFreq string
@@ -33,7 +40,7 @@ const (
 // using with a sitemap index.
 type URL struct {
 	Loc        string     `xml:"loc"`
-	LastMod    *time.Time `xml:"lastmod,omitempty"`
+	LastMod    Date       `xml:"lastmod,omitempty"`
 	ChangeFreq ChangeFreq `xml:"changefreq,omitempty"`
 	Priority   float32    `xml:"priority,omitempty"`
 }
@@ -93,3 +100,11 @@ func (s *Sitemap) ReadFrom(r io.Reader) (n int64, err error) {
 }
 
 var _ io.ReaderFrom = (*Sitemap)(nil)
+
+// MarshalXML marshals LastMod into the correct format
+func (d Date) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	dateString := fmt.Sprintf("%v", time.Time(d.Time).Format("2006-01-02"))
+	e.EncodeElement(dateString, start)
+
+	return nil
+}

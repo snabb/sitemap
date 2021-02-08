@@ -1,9 +1,10 @@
 package sitemap_test
 
 import (
-	"github.com/snabb/sitemap"
 	"os"
 	"time"
+
+	"github.com/semantosoph/sitemap"
 )
 
 func Example() {
@@ -11,7 +12,7 @@ func Example() {
 	t := time.Unix(0, 0).UTC()
 	sm.Add(&sitemap.URL{
 		Loc:        "http://example.com/",
-		LastMod:    &t,
+		LastMod:    sitemap.Date{t},
 		ChangeFreq: sitemap.Daily,
 	})
 	sm.WriteTo(os.Stdout)
@@ -20,7 +21,7 @@ func Example() {
 	// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	//   <url>
 	//     <loc>http://example.com/</loc>
-	//     <lastmod>1970-01-01T00:00:00Z</lastmod>
+	//     <lastmod>1970-01-01</lastmod>
 	//     <changefreq>daily</changefreq>
 	//   </url>
 	// </urlset>

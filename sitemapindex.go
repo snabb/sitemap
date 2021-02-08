@@ -2,8 +2,9 @@ package sitemap
 
 import (
 	"encoding/xml"
-	"github.com/snabb/diagio"
 	"io"
+
+	"github.com/snabb/diagio"
 )
 
 // SitemapIndex is like Sitemap except the elements are named differently
