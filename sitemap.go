@@ -7,9 +7,10 @@ package sitemap
 
 import (
 	"encoding/xml"
-	"github.com/snabb/diagio"
 	"io"
 	"time"
+
+	"github.com/snabb/diagio"
 )
 
 // ChangeFreq specifies change frequency of a sitemap entry. It is just a string.
