@@ -79,7 +79,10 @@ func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
 		en.Indent("", "  ")
 	}
 	err = en.Encode(s)
-	cw.Write([]byte{'\n'})
+	if err != nil {
+		return cw.Count(), err
+	}
+	_, err = cw.Write([]byte{'\n'})
 	return cw.Count(), err
 }
 
