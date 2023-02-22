@@ -7,6 +7,7 @@ import (
 	"github.com/snabb/sitemap"
 )
 
+// Sitemap index with one sitemap URL.
 func ExampleSitemapIndex() {
 	smi := sitemap.NewSitemapIndex()
 	t := time.Unix(0, 0).UTC()
