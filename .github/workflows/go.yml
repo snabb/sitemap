@@ -15,11 +15,14 @@ jobs:
         with:
           go-version: 'stable'
 
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+
       - name: Build
         run: go build -v ./...
 
       - name: Test
-        run: go test -v ./...
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3

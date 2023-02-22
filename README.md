@@ -3,6 +3,7 @@ sitemap
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/snabb/sitemap.svg)](https://pkg.go.dev/github.com/snabb/sitemap)
 [![Build Status](https://github.com/snabb/sitemap/actions/workflows/go.yml/badge.svg)](https://github.com/snabb/sitemap/actions/workflows/go.yml)
+[![codecov](https://codecov.io/gh/snabb/sitemap/branch/master/graph/badge.svg)](https://codecov.io/gh/snabb/sitemap)
 [![Go Report Card](https://goreportcard.com/badge/github.com/snabb/sitemap)](https://goreportcard.com/report/github.com/snabb/sitemap)
 
 The Go package sitemap provides tools for creating XML sitemaps
