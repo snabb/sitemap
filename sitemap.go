@@ -1,8 +1,8 @@
 // Package sitemap provides tools for creating XML sitemaps
-// and sitemap indexes and writing them to io.Writer (such as
-// http.ResponseWriter).
+// and sitemap indexes and writing them to [io.Writer] (such as
+// [net/http.ResponseWriter]).
 //
-// Please see http://www.sitemaps.org/ for description of sitemap contents.
+// Please see https://www.sitemaps.org/ for description of sitemap contents.
 package sitemap
 
 import (
@@ -13,10 +13,11 @@ import (
 	"github.com/snabb/diagio"
 )
 
-// ChangeFreq specifies change frequency of a sitemap entry. It is just a string.
+// ChangeFreq specifies change frequency of a [Sitemap] or [SitemapIndex]
+// [URL] entry. It is just a string.
 type ChangeFreq string
 
-// Feel free to use these constants for ChangeFreq (or you can just supply
+// Feel free to use these constants for [ChangeFreq] (or you can just supply
 // a string directly).
 const (
 	Always  ChangeFreq = "always"
@@ -28,8 +29,8 @@ const (
 	Never   ChangeFreq = "never"
 )
 
-// URL entry in sitemap or sitemap index. LastMod is a pointer
-// to time.Time because omitempty does not work otherwise. Loc is the
+// URL entry in [Sitemap] or [SitemapIndex]. LastMod is a pointer
+// to [time.Time] because omitempty does not work otherwise. Loc is the
 // only mandatory item. ChangeFreq and Priority must be left empty when
 // using with a sitemap index.
 type URL struct {
@@ -40,7 +41,7 @@ type URL struct {
 }
 
 // Sitemap represents a complete sitemap which can be marshaled to XML.
-// New instances must be created with New() in order to set the xmlns
+// New instances must be created with [New] in order to set the xmlns
 // attribute correctly. Minify can be set to make the output less human
 // readable.
 type Sitemap struct {
@@ -52,7 +53,7 @@ type Sitemap struct {
 	Minify bool `xml:"-"`
 }
 
-// New returns a new Sitemap.
+// New returns a new [Sitemap].
 func New() *Sitemap {
 	return &Sitemap{
 		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
@@ -60,13 +61,13 @@ func New() *Sitemap {
 	}
 }
 
-// Add adds an URL to a Sitemap.
+// Add adds an [URL] to a [Sitemap].
 func (s *Sitemap) Add(u *URL) {
 	s.URLs = append(s.URLs, u)
 }
 
-// WriteTo writes XML encoded sitemap to given io.Writer.
-// Implements io.WriterTo.
+// WriteTo writes XML encoded sitemap to given [io.Writer].
+// Implements [io.WriterTo].
 func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
 	cw := diagio.NewCounterWriter(w)
 
@@ -88,8 +89,8 @@ func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
 
 var _ io.WriterTo = (*Sitemap)(nil)
 
-// ReadFrom reads and parses an XML encoded sitemap from io.Reader.
-// Implements io.ReaderFrom.
+// ReadFrom reads and parses an XML encoded sitemap from [io.Reader].
+// Implements [io.ReaderFrom].
 func (s *Sitemap) ReadFrom(r io.Reader) (n int64, err error) {
 	de := xml.NewDecoder(r)
 	err = de.Decode(s)
