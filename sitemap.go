@@ -29,15 +29,23 @@ const (
 	Never   ChangeFreq = "never"
 )
 
+// XHTMLLink entry in [URL].
+type XHTMLLink struct {
+	Rel      string `xml:"rel,attr"`
+	HrefLang string `xml:"hreflang,attr"`
+	Href     string `xml:"href,attr"`
+}
+
 // URL entry in [Sitemap] or [SitemapIndex]. LastMod is a pointer
 // to [time.Time] because omitempty does not work otherwise. Loc is the
 // only mandatory item. ChangeFreq and Priority must be left empty when
 // using with a sitemap index.
 type URL struct {
-	Loc        string     `xml:"loc"`
-	LastMod    *time.Time `xml:"lastmod,omitempty"`
-	ChangeFreq ChangeFreq `xml:"changefreq,omitempty"`
-	Priority   float32    `xml:"priority,omitempty"`
+	Loc        string      `xml:"loc"`
+	LastMod    *time.Time  `xml:"lastmod,omitempty"`
+	ChangeFreq ChangeFreq  `xml:"changefreq,omitempty"`
+	Priority   float32     `xml:"priority,omitempty"`
+	XHTMLLinks []XHTMLLink `xml:"xhtml:link"`
 }
 
 // Sitemap represents a complete sitemap which can be marshaled to XML.
@@ -45,8 +53,9 @@ type URL struct {
 // attribute correctly. Minify can be set to make the output less human
 // readable.
 type Sitemap struct {
-	XMLName xml.Name `xml:"urlset"`
-	Xmlns   string   `xml:"xmlns,attr"`
+	XMLName    xml.Name `xml:"urlset"`
+	Xmlns      string   `xml:"xmlns,attr"`
+	XmlnsXHTML *string  `xml:"xmlns:xhtml,attr"`
 
 	URLs []*URL `xml:"url"`
 
@@ -59,6 +68,19 @@ func New() *Sitemap {
 		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
 		URLs:  make([]*URL, 0),
 	}
+}
+
+// WithXHTML adds the xmlns:xhtml to a [Sitemap].
+func (s *Sitemap) WithXHTML() *Sitemap {
+	xhtml := "http://www.w3.org/1999/xhtml"
+	s.XmlnsXHTML = &xhtml
+	return s
+}
+
+// WithMinify enables minification on a [Sitemap].
+func (s *Sitemap) WithMinify() *Sitemap {
+	s.Minify = true
+	return s
 }
 
 // Add adds an [URL] to a [Sitemap].
@@ -90,7 +112,8 @@ func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
 var _ io.WriterTo = (*Sitemap)(nil)
 
 // ReadFrom reads and parses an XML encoded sitemap from [io.Reader].
-// Implements [io.ReaderFrom].
+// Implements [io.ReaderFrom]. Due to https://github.com/golang/go/issues/9519,
+// unmarshaling xhtml links doesn't work.
 func (s *Sitemap) ReadFrom(r io.Reader) (n int64, err error) {
 	de := xml.NewDecoder(r)
 	err = de.Decode(s)

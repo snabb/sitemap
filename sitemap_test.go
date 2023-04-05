@@ -40,31 +40,36 @@ func Example() {
 
 // Sitemap with one URL.
 func ExampleSitemap() {
-	sm := sitemap.New()
+	sm := sitemap.New().WithXHTML()
 	t := time.Date(1984, 1, 1, 0, 0, 0, 0, time.UTC)
 	sm.Add(&sitemap.URL{
 		Loc:        "http://example.com/",
 		LastMod:    &t,
 		ChangeFreq: sitemap.Daily,
 		Priority:   0.5,
+		XHTMLLinks: []sitemap.XHTMLLink{
+			{Rel: "alternate", HrefLang: "en", Href: "http://example.com"},
+			{Rel: "alternate", HrefLang: "fr", Href: "http://example.com?lang=fr"},
+		},
 	})
 	sm.WriteTo(os.Stdout)
 	// Output:
 	// <?xml version="1.0" encoding="UTF-8"?>
-	// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 	//   <url>
 	//     <loc>http://example.com/</loc>
 	//     <lastmod>1984-01-01T00:00:00Z</lastmod>
 	//     <changefreq>daily</changefreq>
 	//     <priority>0.5</priority>
+	//     <xhtml:link rel="alternate" hreflang="en" href="http://example.com"></xhtml:link>
+	//     <xhtml:link rel="alternate" hreflang="fr" href="http://example.com?lang=fr"></xhtml:link>
 	//   </url>
 	// </urlset>
 }
 
-// Setting Minify to true omits indentation and newlines in generated sitemap.
+// WithMinify omits indentation and newlines in generated sitemap.
 func ExampleSitemap_minify() {
-	sm := sitemap.New()
-	sm.Minify = true
+	sm := sitemap.New().WithMinify()
 	t := time.Date(1984, 1, 1, 0, 0, 0, 0, time.UTC)
 	sm.Add(&sitemap.URL{
 		Loc:        "http://example.com/",
