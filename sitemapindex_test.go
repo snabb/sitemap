@@ -44,6 +44,20 @@ func TestSitemapIndex_WriteToError(t *testing.T) {
 	}
 }
 
+func TestSitemapIndex_WriteToSetsDefaultXMLNS(t *testing.T) {
+	smi := new(sitemap.SitemapIndex)
+	smi.Add(&sitemap.URL{Loc: "http://example.com/sitemap.xml"})
+
+	buf := new(bytes.Buffer)
+	if _, err := smi.WriteTo(buf); err != nil {
+		t.Fatalf("WriteTo returned error: %v", err)
+	}
+
+	if got, want := smi.Xmlns, "http://www.sitemaps.org/schemas/sitemap/0.9"; got != want {
+		t.Fatalf("Xmlns = %q, want %q", got, want)
+	}
+}
+
 func TestSitemapIndex_ReadFrom(t *testing.T) {
 	smi1 := sitemap.NewSitemapIndex()
 

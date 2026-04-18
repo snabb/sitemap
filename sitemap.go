@@ -13,6 +13,8 @@ import (
 	"github.com/snabb/diagio"
 )
 
+const defaultXMLNS = "http://www.sitemaps.org/schemas/sitemap/0.9"
+
 // ChangeFreq specifies change frequency of a [Sitemap] or [SitemapIndex]
 // [URL] entry. It is just a string.
 type ChangeFreq string
@@ -56,7 +58,7 @@ type Sitemap struct {
 // New returns a new [Sitemap].
 func New() *Sitemap {
 	return &Sitemap{
-		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
+		Xmlns: defaultXMLNS,
 		URLs:  make([]*URL, 0),
 	}
 }
@@ -70,6 +72,10 @@ func (s *Sitemap) Add(u *URL) {
 // Implements [io.WriterTo].
 func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
 	cw := diagio.NewCounterWriter(w)
+
+	if s.Xmlns == "" {
+		s.Xmlns = defaultXMLNS
+	}
 
 	_, err = cw.Write([]byte(xml.Header))
 	if err != nil {
