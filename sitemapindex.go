@@ -3,8 +3,6 @@ package sitemap
 import (
 	"encoding/xml"
 	"io"
-
-	"github.com/snabb/diagio"
 )
 
 // SitemapIndex is like [Sitemap] except the elements are named differently
@@ -37,7 +35,7 @@ func (s *SitemapIndex) Add(u *URL) {
 // WriteTo writes XML encoded sitemap index to given [io.Writer].
 // Implements [io.WriterTo].
 func (s *SitemapIndex) WriteTo(w io.Writer) (n int64, err error) {
-	cw := diagio.NewCounterWriter(w)
+	cw := NewCounterWriter(w)
 
 	if s.Xmlns == "" {
 		s.Xmlns = defaultXMLNS
