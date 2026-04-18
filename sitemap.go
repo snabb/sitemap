@@ -9,8 +9,6 @@ import (
 	"encoding/xml"
 	"io"
 	"time"
-
-	"github.com/snabb/diagio"
 )
 
 const defaultXMLNS = "http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -71,7 +69,7 @@ func (s *Sitemap) Add(u *URL) {
 // WriteTo writes XML encoded sitemap to given [io.Writer].
 // Implements [io.WriterTo].
 func (s *Sitemap) WriteTo(w io.Writer) (n int64, err error) {
-	cw := diagio.NewCounterWriter(w)
+	cw := NewCounterWriter(w)
 
 	if s.Xmlns == "" {
 		s.Xmlns = defaultXMLNS
