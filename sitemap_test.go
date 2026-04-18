@@ -100,6 +100,20 @@ func TestSitemap_WriteToError(t *testing.T) {
 	}
 }
 
+func TestSitemap_WriteToSetsDefaultXMLNS(t *testing.T) {
+	sm := new(sitemap.Sitemap)
+	sm.Add(&sitemap.URL{Loc: "http://example.com/"})
+
+	buf := new(bytes.Buffer)
+	if _, err := sm.WriteTo(buf); err != nil {
+		t.Fatalf("WriteTo returned error: %v", err)
+	}
+
+	if got, want := sm.Xmlns, "http://www.sitemaps.org/schemas/sitemap/0.9"; got != want {
+		t.Fatalf("Xmlns = %q, want %q", got, want)
+	}
+}
+
 func TestSitemap_ReadFrom(t *testing.T) {
 	sm1 := sitemap.New()
 

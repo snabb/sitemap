@@ -24,7 +24,7 @@ type SitemapIndex struct {
 // NewSitemapIndex returns new [SitemapIndex].
 func NewSitemapIndex() *SitemapIndex {
 	return &SitemapIndex{
-		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
+		Xmlns: defaultXMLNS,
 		URLs:  make([]*URL, 0),
 	}
 }
@@ -38,6 +38,10 @@ func (s *SitemapIndex) Add(u *URL) {
 // Implements [io.WriterTo].
 func (s *SitemapIndex) WriteTo(w io.Writer) (n int64, err error) {
 	cw := diagio.NewCounterWriter(w)
+
+	if s.Xmlns == "" {
+		s.Xmlns = defaultXMLNS
+	}
 
 	_, err = cw.Write([]byte(xml.Header))
 	if err != nil {
@@ -55,7 +59,7 @@ func (s *SitemapIndex) WriteTo(w io.Writer) (n int64, err error) {
 	return cw.Count(), err
 }
 
-var _ io.WriterTo = (*Sitemap)(nil)
+var _ io.WriterTo = (*SitemapIndex)(nil)
 
 // ReadFrom reads and parses an XML encoded sitemap index from [io.Reader].
 // Implements [io.ReaderFrom].
@@ -65,4 +69,4 @@ func (s *SitemapIndex) ReadFrom(r io.Reader) (n int64, err error) {
 	return de.InputOffset(), err
 }
 
-var _ io.ReaderFrom = (*Sitemap)(nil)
+var _ io.ReaderFrom = (*SitemapIndex)(nil)
